@@ -14,6 +14,7 @@ export default class MyDocument extends Document {
                 });
 
             const initialProps = await Document.getInitialProps(ctx);
+
             return {
                 ...initialProps,
                 styles: (
@@ -29,17 +30,31 @@ export default class MyDocument extends Document {
     }
 
     render() {
-        const setInitialTheme = `
-          function getUserPreference() {
-            if(window.localStorage.getItem('theme')) {
-              return window.localStorage.getItem('theme')
-            }
-            return window.matchMedia('(prefers-color-scheme: dark)').matches
-              ? 'dark'
-              : 'light'
-          }
-          document.body.dataset.theme = getUserPreference();
-        `;
+        const setInitialTheme = `(function () {
+                  function setTheme(newTheme) {
+                    document.body.className = newTheme;
+                    window.theme = newTheme;
+                    window.onThemeChange(newTheme);
+                  }
+                  window.onThemeChange = function () {};
+                  window.setPreferredTheme = function (newTheme) {
+                    setTheme(newTheme);
+                    try {
+                      localStorage.setItem("theme", (window.theme));
+                    } catch (err) {}
+                  };
+                  const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+                  darkQuery.addListener(function (event) {
+                    window.setPreferredTheme(event.matches ? "dark" : "light");
+                  });
+                  let preferredTheme;
+                  try {
+                    preferredTheme = (localStorage.getItem("theme"));
+                  } catch (err) {}
+                  setTheme(preferredTheme || (darkQuery.matches ? "dark" : "light"));
+                })();
+            `;
+
         return (
             <Html>
                 <Head />
@@ -48,7 +63,7 @@ export default class MyDocument extends Document {
                         dangerouslySetInnerHTML={{
                             __html: setInitialTheme,
                         }}
-                    />
+                    ></script>
                     <Main />
                     <NextScript />
                 </body>

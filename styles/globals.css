@@ -1,31 +1,48 @@
 
 
 
-
-body,
-body[data-theme="light"] {
-  --color-text-primary: #27201a;
-  --color-text-secondary: #076963;
-  --color-bg-primary: #fff;
-  --color-bg-toggle: #1E90FF; 
+/* 
+html {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-body[data-theme="dark"] {
-  --color-text-primary: #e3e3e3;
-  --color-text-secondary: #ff6b00;
-  --color-bg-primary: #15232d;
-  --color-bg-toggle: #a9a9a9; 
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 body {
-  background: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  font-family: sans-serif;
-	transition: background 0.25s ease-in-out;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--text-color);
+  transition: background-color 200ms, color 200ms;
 }
 
-h1 {
-  color: var(--color-text-secondary);
+body {
+  --background: #faf4f8;
+  --text-color: rgba(0, 0, 0, 0.87);
+  --link: #3182ce;
 }
+
+body.dark {
+  --background: #1a202c;
+  --text-color: #f7fafc;
+  --link: #63b3ed;
+}
+
+a {
+  text-decoration: none;
+  color: var(--link);
+}
+
+button:focus {
+  box-shadow: 0 0 0 3px rgba(237, 137, 54, 0.5);
+} */
+
 
 

@@ -1,6 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { Sun, Moon, Bell, Home, List, X } from '@styled-icons/feather';
+import { useTheme } from '../theme/themeContext';
 
 const Container = styled.div`
     width: '100%';
@@ -27,16 +28,20 @@ const StyledMoon = styled(Moon)`
 `;
 
 const Header = () => {
-    const [activeTheme, setActiveTheme] = useState(document.body.dataset.theme);
     const [open, setOpen] = useState(false);
 
+    const [mount, setMount] = useState(false);
+    const { theme, toggleTheme } = useTheme();
+    console.log(theme);
     const handleOnClick = () => {
         setOpen(!open);
     };
+
     useEffect(() => {
-        document.body.dataset.theme = activeTheme;
-        window.localStorage.setItem('theme', activeTheme);
-    }, [activeTheme]);
+        setMount(true);
+    }, []);
+
+    if (!mount) return null;
 
     return (
         <>
@@ -52,15 +57,15 @@ const Header = () => {
                 <div>
                     <Home size={'1.9em'} />
                     <Bell style={{ paddingInline: '3.2em' }} size={'1.9em'} />
-                    {activeTheme === 'dark' ? (
+                    {theme === 'dark' ? (
                         <StyledSun
                             size={'1.9em'}
-                            onClick={() => setActiveTheme('light')}
+                            onClick={() => toggleTheme('light')}
                         />
                     ) : (
                         <StyledMoon
                             size={'1.9em'}
-                            onClick={() => setActiveTheme('dark')}
+                            onClick={() => toggleTheme('dark')}
                         />
                     )}
                 </div>
